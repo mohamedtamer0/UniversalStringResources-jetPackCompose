@@ -2,10 +2,16 @@
 
 - Whenever possible, you should be using string resources to make sure your app can easily be translated to other languages. However to read a string resource, you need access to the context which you don't have in ViewModels. In this Repo I show you how you can solve this problem.
 
-Book            |
-:-------------------------:|
-<img src="https://user-images.githubusercontent.com/51374446/152574995-48c5555f-42c8-44d6-8522-36e49fdb3a58.gif" width="200" height="400" /> |
 
+
+
+## Preview
+<div align="center">
+<br/>
+
+<img src="https://user-images.githubusercontent.com/51374446/163266116-c172f4e8-ae7d-498e-b619-bb7723db8323.jpg" width="250" height="480" />
+</div>
+    
 ## Create sealed class :
 ```kotlin
 sealed class UiText {
