@@ -3,41 +3,54 @@ package com.example.universalstringresources_jetpackcompose
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.*
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.universalstringresources_jetpackcompose.ui.theme.UniversalStringResourcesjetPackComposeTheme
+import kotlinx.coroutines.flow.collect
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             UniversalStringResourcesjetPackComposeTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background
-                ) {
-                    Greeting("Android")
+                val viewModel = viewModel<MyViewModel>()
+                val scaffoldState = rememberScaffoldState()
+                LaunchedEffect(key1 = scaffoldState) {
+                    viewModel.errors.collect { error ->
+                        scaffoldState.snackbarHostState.showSnackbar(
+                            message = error
+                        )
+                    }
+                }
+                Scaffold(scaffoldState = scaffoldState) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(horizontal = 32.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
+                    ) {
+                        TextField(
+                            value = viewModel.name,
+                            onValueChange = viewModel::onNameChange,
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Button(
+                            onClick = { viewModel.validateInputs() },
+                            modifier = Modifier.align(Alignment.End)
+                        ) {
+                            Text(text = "Validate")
+                        }
+                    }
                 }
             }
         }
     }
 }
 
-@Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    UniversalStringResourcesjetPackComposeTheme {
-        Greeting("Android")
-    }
-}
