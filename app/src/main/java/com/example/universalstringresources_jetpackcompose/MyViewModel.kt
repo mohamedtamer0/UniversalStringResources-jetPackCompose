@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
 class MyViewModel : ViewModel() {
-    private val errorChannel = Channel<String>()
+    private val errorChannel = Channel<UiText>()
 
     val errors = errorChannel.receiveAsFlow()
 
@@ -24,7 +24,9 @@ class MyViewModel : ViewModel() {
         viewModelScope.launch {
             if (name.length < MIN_NAME_LENGTH) {
                 errorChannel.send(
-                    "The name must be at least $MIN_NAME_LENGTH characters long"
+                    UiText.StringResource(
+                        resId = R.string.min_name_length_error, MIN_NAME_LENGTH
+                    )
                 )
             }
         }

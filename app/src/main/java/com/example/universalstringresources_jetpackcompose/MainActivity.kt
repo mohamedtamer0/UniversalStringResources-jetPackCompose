@@ -8,6 +8,7 @@ import androidx.compose.material.*
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.universalstringresources_jetpackcompose.ui.theme.UniversalStringResourcesjetPackComposeTheme
@@ -20,10 +21,12 @@ class MainActivity : ComponentActivity() {
             UniversalStringResourcesjetPackComposeTheme {
                 val viewModel = viewModel<MyViewModel>()
                 val scaffoldState = rememberScaffoldState()
+                val context = LocalContext.current
+
                 LaunchedEffect(key1 = scaffoldState) {
                     viewModel.errors.collect { error ->
                         scaffoldState.snackbarHostState.showSnackbar(
-                            message = error
+                            message = error.asString(context)
                         )
                     }
                 }
